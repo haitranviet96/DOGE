@@ -5,10 +5,20 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- link to database -->
-    <string name="my_computer_link">http://192.168.1.38/</string>
-    <string name="all_food_link">project1/serverFood.php?cat=all</string>
+    <string name="my_computer_link">http://192.168.1.40/project1/</string>
+    <string name="all_food_link">serverFood.php?cat=all</string>
+    <string name="all_store_link">adminPage.php?vendorname=&amp;vendoraddress=</string>
+    <string name="search_store_1">adminPage.php?vendorname=</string>
+    <string name="search_store_2">&amp;vendoraddress=</string>
+    <string name="search_food_1">adminPage.php?foodname=</string>
+    <string name="search_food_2">&amp;foodcourse=</string>
 
+    <!-- Normal string in app -->
     <string name="no_data_available">No results !</string>
 
     <string name="action_settings">Settings</string>
+    <string name="store_list">Store List</string>
+    <string name="food_list">Food List</string>
+
+    <string name="search_hint">Search food</string>
 </resources>

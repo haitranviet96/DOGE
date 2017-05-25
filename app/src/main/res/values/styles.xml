@@ -18,4 +18,32 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MaterialSearchViewStyle">
+        <!--&lt;!&ndash; Background for the search bar &ndash;&gt;-->
+        <!--<item name="searchBackground">@color/theme_primary</item>-->
+
+        <!--&lt;!&ndash; Change voice icon &ndash;&gt;-->
+        <!--<item name="searchVoiceIcon">@drawable/ic_action_voice_search_inverted</item>-->
+
+        <!--&lt;!&ndash; Change clear text icon &ndash;&gt;-->
+        <!--<item name="searchCloseIcon">@drawable/ic_action_navigation_close_inverted</item>-->
+
+        <!--&lt;!&ndash; Change up icon &ndash;&gt;-->
+        <!--<item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back_inverted</item>-->
+
+        <!--&lt;!&ndash; Change icon for the suggestions &ndash;&gt;-->
+        <!--<item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
+
+        <!--&lt;!&ndash; Change background for the suggestions list view &ndash;&gt;-->
+        <!--<item name="searchSuggestionBackground">@android:color/white</item>-->
+
+        <!--&lt;!&ndash; Change text color for edit text. This will also be the color of the cursor &ndash;&gt;-->
+        <!--<item name="android:textColor">@color/theme_primary_text_inverted</item>-->
+
+        <!-- Change hint text color for edit text -->
+        <item name="android:textColorHint">#64000000</item>
+
+        <!-- Hint for edit text -->
+        <item name="android:hint">@string/search_hint</item>
+    </style>
 </resources>
