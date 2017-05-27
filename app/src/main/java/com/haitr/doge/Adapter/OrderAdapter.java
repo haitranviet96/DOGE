@@ -1,4 +1,4 @@
-package com.haitr.doge;
+package com.haitr.doge.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,23 +10,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.haitr.doge.Object.Food;
+import com.haitr.doge.R;
+import com.haitr.doge.Object.Vendor;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Created by haitr on 5/19/2017.
+ * Created by haitr on 5/26/2017.
  */
 
-public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int FOOD = 0;
     private final int VENDOR = 1;
     private List<Object> list;
     private Context context;
+    private TextView noContent;
 
-    public ListViewAdapter(List<Object> list, Context context) {
+    public OrderAdapter(List<Object> list, Context context, TextView noContent) {
+        this.noContent = noContent;
         this.list = list;
         this.context = context;
     }
@@ -43,16 +48,17 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return list;
     }
 
-    public class FoodViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, description;
-        public ImageView thumbnail;
-        public EditText quantity;
-        public Button order_button, increase_button, decrease_button;
+    private class FoodViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, description, price;
+        ImageView thumbnail;
+        EditText quantity;
+        Button order_button, increase_button, decrease_button;
 
-        public FoodViewHolder(View view) {
+        FoodViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             description = (TextView) view.findViewById(R.id.description);
+            price = (TextView) view.findViewById(R.id.price);
             thumbnail = (ImageView) view.findViewById(R.id.imageView);
             quantity = (EditText) view.findViewById(R.id.quantity);
             order_button = (Button) view.findViewById(R.id.order_button);
@@ -61,16 +67,23 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public class VendorViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, description,quality;
-        public ImageView thumbnail;
+    private class VendorViewHolder extends RecyclerView.ViewHolder {
+        TextView title, description, quality, price;
+        ImageView thumbnail;
+        EditText quantity;
+        Button order_button, increase_button, decrease_button;
 
-        public VendorViewHolder(View view) {
+        VendorViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             description = (TextView) view.findViewById(R.id.description);
+            price = (TextView) view.findViewById(R.id.price);
             thumbnail = (ImageView) view.findViewById(R.id.imageView);
             quality = (TextView) view.findViewById(R.id.quality);
+            quantity = (EditText) view.findViewById(R.id.quantity);
+            order_button = (Button) view.findViewById(R.id.order_button);
+            increase_button = (Button) view.findViewById(R.id.increase_button);
+            decrease_button = (Button) view.findViewById(R.id.decrease_button);
         }
     }
 
@@ -90,7 +103,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         RecyclerView.ViewHolder viewHolder = null;
 
         //View itemView = LayoutInflater.from(parent.getContext())
-                //.inflate(R.layout.food_item, parent, false);
+        //.inflate(R.layout.food_item, parent, false);
         //return new FoodViewHolder(itemView);
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -98,11 +111,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case FOOD:
                 View v1 = inflater.inflate(R.layout.food_item, parent, false);
-                viewHolder = new FoodViewHolder(v1);
+                viewHolder = new OrderAdapter.FoodViewHolder(v1);
                 break;
             case VENDOR:
                 View v2 = inflater.inflate(R.layout.vendor_item, parent, false);
-                viewHolder = new VendorViewHolder(v2);
+                viewHolder = new OrderAdapter.VendorViewHolder(v2);
                 break;
         }
         return viewHolder;
@@ -112,23 +125,27 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()) {
             case FOOD:
-                FoodViewHolder vh1 = (FoodViewHolder) holder;
+                OrderAdapter.FoodViewHolder vh1 = (OrderAdapter.FoodViewHolder) holder;
                 configureFoodViewHolder(vh1, position);
                 break;
             case VENDOR:
-                VendorViewHolder vh2 = (VendorViewHolder) holder;
+                OrderAdapter.VendorViewHolder vh2 = (OrderAdapter.VendorViewHolder) holder;
                 configureVendorViewHolder(vh2, position);
                 break;
         }
     }
 
-    private void configureFoodViewHolder(final FoodViewHolder holder, int position) {
+    private void configureFoodViewHolder(final OrderAdapter.FoodViewHolder holder, int position) {
         Food food = (Food) list.get(position);
         if(getItemCount() == 0){
-            MainActivity.noContent.setVisibility(View.VISIBLE);
+            noContent.setVisibility(View.VISIBLE);
         }else {
             holder.title.setText(food.getName());
-            holder.description.setText(food.getDescription());
+            if(Objects.equals(food.getDescription(), ""))
+                holder.description.setVisibility(View.GONE);
+            else
+                holder.description.setText(food.getDescription());
+            holder.price.setText(food.getPrice() + " đ");
             //holder.quantity.setText(food.g() + " ");
 
             // loading album cover using Glide library
@@ -164,14 +181,18 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void configureVendorViewHolder(final VendorViewHolder holder, int position) {
+    private void configureVendorViewHolder(final OrderAdapter.VendorViewHolder holder, int position) {
         Vendor vendor = (Vendor) list.get(position);
         if(getItemCount() == 0){
-            MainActivity.noContent1.setVisibility(View.VISIBLE);
+            noContent.setVisibility(View.VISIBLE);
         }else {
             holder.title.setText(vendor.getName());
-            holder.description.setText(vendor.getAddress());
-            holder.quality.setText(vendor.getQuality() + "");
+            if(Objects.equals(vendor.getAddress(), ""))
+                holder.description.setVisibility(View.GONE);
+            else
+                holder.description.setText(vendor.getAddress());
+            holder.price.setText(vendor.getPrice() + " đ");
+            holder.quality.setText(String.format("%s", vendor.getQuality()));
 
             // loading album cover using Glide library
             // Glide.with(context).load(food.getImage()).into(holder.thumbnail);
@@ -183,6 +204,34 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .resize(200,200)
                     .centerCrop()
                     .into(holder.thumbnail);
+
+            holder.order_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //showPopupMenu(holder.order_button);
+                }
+            });
+
+            holder.increase_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int temp = Integer.parseInt(holder.quantity.getText().toString());
+                    temp += 1;
+                    holder.quantity.setText(temp + "");
+                }
+            });
+
+            holder.decrease_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int temp = Integer.parseInt(holder.quantity.getText().toString());
+                    temp -= 1;
+                    if (temp < 1) {
+                        return;
+                    }
+                    holder.quantity.setText(temp + "");
+                }
+            });
         }
     }
 

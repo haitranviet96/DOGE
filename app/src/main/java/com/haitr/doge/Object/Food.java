@@ -1,22 +1,22 @@
-package com.haitr.doge;
+package com.haitr.doge.Object;
+
+import com.haitr.doge.Object.Dish;
 
 /**
  * Created by haitr on 5/19/2017.
  */
 
-public class Food {
+public class Food extends Dish {
     private int id;
-    private String name, type, course, description;
-    private int image;
+    private String name, type, course, description, image;
 
-    public Food(int id, String name, String description, int image) {
-        this.id = id;
+    public Food(String name, String description, String image) {
         this.name = name;
         this.description = description;
         this.image = image;
     }
 
-    public Food(int id, String name, String type, String course, String description, int image) {
+    public Food(int id, String name, String type, String course, String description, String image) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -68,11 +68,11 @@ public class Food {
         this.description = description;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

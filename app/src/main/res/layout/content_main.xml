@@ -6,75 +6,11 @@
     android:layout_height="fill_parent"
     android:layout_marginTop="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.haitr.doge.MainActivity"
+    tools:context="com.haitr.doge.Activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <com.baoyz.widget.PullRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <FrameLayout
+        android:id="@+id/content_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/noContent1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/no_data_available"
-                    android:layout_alignBottom="@+id/recycler_view_store"
-                    android:layout_alignTop="@+id/recycler_view_store"/>
-
-                <TextView
-                    android:id="@+id/noContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/no_data_available"
-                    android:layout_below="@+id/food_text"/>
-
-                <TextView
-                    android:id="@+id/store_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/store_list"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_store"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    android:layout_below="@id/store_text"
-                    android:layout_marginTop="5dp"
-                    android:clipToPadding="false"
-                    android:scrollbars="horizontal" />
-
-                <TextView
-                    android:id="@+id/food_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/recycler_view_store"
-                    android:layout_margin="5dp"
-                    android:text="@string/food_list"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:scrollbars="vertical"
-                    android:layout_below="@+id/food_text"
-                    android:layout_alignParentStart="true" />
-            </RelativeLayout>
-        </ScrollView>
-    </com.baoyz.widget.PullRefreshLayout>
+        android:layout_height="match_parent"/>
 </RelativeLayout>

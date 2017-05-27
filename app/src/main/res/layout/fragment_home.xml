@@ -1,0 +1,76 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.haitr.doge.Fragment.HomeFragment">
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/noContent1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/recycler_view_store"
+                    android:layout_alignTop="@+id/recycler_view_store"
+                    android:gravity="center"
+                    android:text="@string/no_data_available" />
+
+                <TextView
+                    android:id="@+id/noContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/title"
+                    android:gravity="center"
+                    android:text="@string/no_data_available" />
+
+                <TextView
+                    android:id="@+id/store_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/store_list"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_store"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/store_text"
+                    android:layout_marginTop="5dp"
+                    android:clipToPadding="false"
+                    android:scrollbars="horizontal" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/recycler_view_store"
+                    android:layout_margin="5dp"
+                    android:text="@string/food_list"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/title"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical" />
+            </RelativeLayout>
+        </ScrollView>
+    </com.baoyz.widget.PullRefreshLayout>
+
+</FrameLayout>

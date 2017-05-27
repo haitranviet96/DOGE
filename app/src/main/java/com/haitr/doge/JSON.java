@@ -1,6 +1,7 @@
 package com.haitr.doge;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static android.R.attr.tag;
+
 /**
  * Created by haitr on 5/20/2017.
  */
@@ -22,7 +25,7 @@ public abstract class JSON extends AsyncTask<String, Integer, String>{
 //    public AsyncResponse delegate = null;
 //
 //    public interface AsyncResponse {
-        abstract void processFinish(String output);
+        protected abstract void processFinish(String output);
 
 //    }
 //
@@ -62,7 +65,8 @@ public abstract class JSON extends AsyncTask<String, Integer, String>{
         StringBuilder content = new StringBuilder();
 
         try {
-            URL url = new URL(theUrl);
+            URL url = new URL(theUrl.replace(" ", "%20"));
+            Log.d("URL haitr 1: ",url.toString());
             URLConnection urlConnection = url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
@@ -74,6 +78,9 @@ public abstract class JSON extends AsyncTask<String, Integer, String>{
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Log.d("URL haitr 2: ",content.toString());
+
         return content.toString();
     }
 }

@@ -1,13 +1,15 @@
-package com.haitr.doge;
+package com.haitr.doge.Object;
+
+import com.haitr.doge.Object.Dish;
 
 /**
  * Created by haitr on 5/25/2017.
  */
 
-public class Vendor {
+public class Vendor extends Dish {
     private int id;
     private String name, address, open_time, close_time;
-    private double quality, services, pricing, space;
+    private double quality, service, pricing, space;
     private String image;
 
     public Vendor() {
@@ -20,16 +22,21 @@ public class Vendor {
         this.image = image;
     }
 
-    public Vendor(int id, String name, String address, String open_time, String close_time, double quality, double pricing, double space, String image) {
+    public Vendor(int id, String name, String address, String open_time, String close_time, double quality, double service, double pricing, double space, String image) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.open_time = open_time;
         this.close_time = close_time;
         this.quality = quality;
+        this.service = service;
         this.pricing = pricing;
         this.space = space;
         this.image = image;
+    }
+
+    public Vendor(String vendor_name, String price, String image) {
+
     }
 
     public int getId() {
@@ -80,12 +87,12 @@ public class Vendor {
         this.quality = quality;
     }
 
-    public double getServices() {
-        return services;
+    public double getService() {
+        return service;
     }
 
-    public void setServices(double services) {
-        this.services = services;
+    public void setService(double service) {
+        this.service = service;
     }
 
     public double getPricing() {
