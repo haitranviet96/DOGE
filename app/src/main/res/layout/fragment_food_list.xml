@@ -228,12 +228,12 @@
                             android:id="@+id/quality"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:layout_alignStart="@+id/img4"
                             android:layout_alignBottom="@+id/img4"
+                            android:layout_alignStart="@+id/img4"
                             android:gravity="center"
                             android:text="0.0"
                             android:textColor="@android:color/white"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
 
                     </RelativeLayout>
 

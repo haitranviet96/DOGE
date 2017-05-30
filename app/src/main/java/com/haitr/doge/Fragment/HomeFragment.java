@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends RecyclerViewFragment {
 
-    public static TextView noContent, noContent1;
+    TextView noContent, noContent1;
     ListViewAdapter foodAdapter, storeAdapter;
     PullRefreshLayout swipeLayout;
     RecyclerView foodListView,storeListView;
@@ -62,8 +62,8 @@ public class HomeFragment extends RecyclerViewFragment {
             public void onRefresh() {
                 // start refresh
                 //swipeLayout.setRefreshStyle(randInt(0,4));
-                prepareFoods(Constants.BASE_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
                 prepareStore(Constants.BASE_URL + Constants.ALL_STORE_URL);
+                prepareFoods(Constants.BASE_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
                 //noContent.setVisibility(View.GONE);
 //                foodDishList.clear();
 //                foodDishList.add(new Food());
@@ -77,7 +77,7 @@ public class HomeFragment extends RecyclerViewFragment {
         // refresh complete
         swipeLayout.setRefreshing(false);
 
-        foodAdapter = new ListViewAdapter(foodList,getActivity());
+        foodAdapter = new ListViewAdapter(foodList,getActivity(),noContent);
         foodAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -102,7 +102,7 @@ public class HomeFragment extends RecyclerViewFragment {
                 ft.commit();
             }
         });
-        storeAdapter = new ListViewAdapter(storeList,getActivity());
+        storeAdapter = new ListViewAdapter(storeList,getActivity(), noContent1);
         storeAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -155,13 +155,10 @@ public class HomeFragment extends RecyclerViewFragment {
 
     public void prepareFoods(String link) {
 
-        //ArrayList<Food> foodDishList = new ArrayList<>();
+        foodList.clear();
+        foodAdapter.notifyDataSetChanged();
 
         if (isNetworkConnected()) {
-            //prepareFoods(getString(R.string.my_computer_link) + getString(R.string.all_food_link));
-            foodList.clear();
-            foodAdapter.notifyDataSetChanged();
-
             final JSON json = new JSON() {
                 public void processFinish(String output) {
                     try {
@@ -172,11 +169,12 @@ public class HomeFragment extends RecyclerViewFragment {
                             JSONObject food = jsonArray.getJSONObject(i);
                             foodList.add(new Food(food.getInt("FoodID"), food.getString("Food_Name"), food.getString("Type"),food.getString("Course"),food.getString("Description"), food.getString("Image")));
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
                         swipeLayout.setRefreshing(false);
                         noContent.setVisibility(View.INVISIBLE);
                         foodAdapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             };
@@ -187,7 +185,7 @@ public class HomeFragment extends RecyclerViewFragment {
                 public void run() {
                     if (json.getStatus() == AsyncTask.Status.RUNNING) {
                         json.cancel(true);
-                        Toast.makeText(getActivity().getApplicationContext(), "Failed refreshing vendor list. Please check your internet connection !", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Failed refreshing food list. Please check your internet connection !", Toast.LENGTH_SHORT).show();
                         noContent.setVisibility(View.VISIBLE);
                         // refresh complete
                         swipeLayout.setRefreshing(false);
@@ -195,7 +193,7 @@ public class HomeFragment extends RecyclerViewFragment {
                 }
             }, 5000);
         } else {
-            Toast.makeText(getActivity().getApplicationContext(), "Failed refreshing vendor list. Please check your internet connection !", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Failed refreshing food list. Please check your internet connection !", Toast.LENGTH_LONG).show();
             noContent.setVisibility(View.VISIBLE);
             swipeLayout.setRefreshing(false);
         }
@@ -243,10 +241,9 @@ public class HomeFragment extends RecyclerViewFragment {
 
     public void prepareStore(String link) {
 
+        storeList.clear();
+        storeAdapter.notifyDataSetChanged();
         if (isNetworkConnected()) {
-            storeList.clear();
-            storeAdapter.notifyDataSetChanged();
-
             final JSON json = new JSON() {
                 public void processFinish(String output) {
                     try {
@@ -255,13 +252,14 @@ public class HomeFragment extends RecyclerViewFragment {
                         JSONArray jsonArray = new JSONArray(output);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject store = jsonArray.getJSONObject(i);
-                            storeList.add(new Vendor(store.getInt("VendorID"), store.getString("Vendor_Name"), store.getString("Address"), store.getString("Open_Time"), store.getString("Close_Time"), store.getDouble("Quality"), store.getDouble("Service"), store.getDouble("Pricing"), store.getDouble("Space"), store.getString("Image")));
+                            storeList.add(new Vendor(store.getInt("VendorID"), store.getString("Vendor_Name"), store.getString("Address"), store.getString("Open_Time"), store.getString("Close_Time"),store.getDouble("Quality"),store.getDouble("Service"),store.getDouble("Pricing"),store.getDouble("Space"), store.getString("Image")));
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
                         swipeLayout.setRefreshing(false);
                         noContent1.setVisibility(View.INVISIBLE);
                         storeAdapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
                 }
             };
@@ -272,7 +270,7 @@ public class HomeFragment extends RecyclerViewFragment {
                 public void run() {
                     if (json.getStatus() == AsyncTask.Status.RUNNING) {
                         json.cancel(true);
-                        Toast.makeText(getContext(), "Failed refreshing vendor list. Please check your internet connection !", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Failed refreshing store list. Please check your internet connection !", Toast.LENGTH_LONG).show();
                         noContent1.setVisibility(View.VISIBLE);
                         // refresh complete
                         swipeLayout.setRefreshing(false);
@@ -280,7 +278,7 @@ public class HomeFragment extends RecyclerViewFragment {
                 }
             }, 5000);
         } else {
-            Toast.makeText(getContext(), "Failed refreshing vendor list. Please check your internet connection !", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Failed refreshing store list. Please check your internet connection !", Toast.LENGTH_LONG).show();
             noContent1.setVisibility(View.VISIBLE);
             swipeLayout.setRefreshing(false);
         }

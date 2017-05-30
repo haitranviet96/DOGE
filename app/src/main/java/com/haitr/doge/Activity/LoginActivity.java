@@ -2,7 +2,6 @@ package com.haitr.doge.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,16 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.haitr.doge.Constants;
 import com.haitr.doge.R;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    EditText emailText,passwordText;
+    EditText emailText, passwordText;
     Button loginButton;
     TextView signupLink;
 
@@ -29,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+//        activateToolbarWithHomeEnable();
 
         emailText = (EditText) findViewById(R.id.input_email);
         passwordText = (EditText) findViewById(R.id.input_password);
@@ -47,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // Start the Signup activity
+                // Start the Sign up activity
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
@@ -70,17 +77,58 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getText().toString();
+        final String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        Ion.with(getApplicationContext())
+                .load(Constants.BASE_URL + Constants.LOGIN_URL)
+                .setBodyParameter("email", email)
+                .setBodyParameter("password", password)
+                .setBodyParameter(Constants.SIGN_IN, Constants.SIGN_IN)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        Log.d(TAG, result);
+
+                        if (result.equalsIgnoreCase(Constants.SUCCESS)) {
+                            EMAIL = email;
+                            IS_LOGIN = true;
+                            savePreferences();
+                            Ion.with(getApplicationContext())
+                                    .load("GET", Constants.BASE_URL + Constants.ACCOUNT_PROFILE_URL)
+                                    .asString()
+                                    .setCallback(new FutureCallback<String>() {
+                                        @Override
+                                        public void onCompleted(Exception e, String result) {
+                                            if(result.equalsIgnoreCase(Constants.ERROR))
+                                                return;
+                                            try {
+                                                JSONArray jsonArray = new JSONArray(result);
+                                                for (int i = 0; i < jsonArray.length(); i++) {
+                                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                                    FIRST_NAME = jsonObject.getString(Constants.FIRST_NAME);
+                                                    LAST_NAME = jsonObject.getString(Constants.LAST_NAME);
+                                                    PHONE = jsonObject.getString(Constants.PHONE);
+                                                    ADDRESS = jsonObject.getString(Constants.ADDRESS);
+                                                    BIRTHDAY = jsonObject.getString(Constants.BIRTHDAY);
+                                                }
+                                                savePreferences();
+                                            } catch (JSONException e1) {
+                                                e1.printStackTrace();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+                        if(IS_LOGIN) onLoginSuccess(); else onLoginFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -92,21 +140,16 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
 
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
+                // TODO: Implement successful signUp logic here
+                // By default we just finish the BaseActivity and log them in automatically
                 this.finish();
             }
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
+        Toast.makeText(LoginActivity.this, "Welcome " + LAST_NAME + " " + FIRST_NAME + "!", Toast.LENGTH_LONG).show();
         finish();
     }
 

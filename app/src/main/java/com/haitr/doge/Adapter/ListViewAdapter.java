@@ -29,9 +29,11 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int VENDOR = 1;
     private List<Object> list;
     private Context context;
-    public ListViewAdapter(List<Object> list, Context context) {
+    private TextView noContent;
+    public ListViewAdapter(List<Object> list, Context context, TextView noContent) {
         this.list = list;
         this.context = context;
+        this.noContent = noContent;
     }
 
     public void setContext(Context context) {
@@ -188,7 +190,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void configureFoodViewHolder(final FoodViewHolder holder, int position) {
         Food food = (Food) list.get(position);
         if(getItemCount() == 0){
-            HomeFragment.noContent.setVisibility(View.VISIBLE);
+            noContent.setVisibility(View.VISIBLE);
         }else {
             holder.title.setText(food.getName());
             holder.description.setText(food.getDescription());
@@ -202,7 +204,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void configureVendorViewHolder(final VendorViewHolder holder, int position) {
         Vendor vendor = (Vendor) list.get(position);
         if(getItemCount() == 0){
-            HomeFragment.noContent1.setVisibility(View.VISIBLE);
+            noContent.setVisibility(View.VISIBLE);
         }else {
             holder.title.setText(vendor.getName());
             holder.description.setText(vendor.getAddress());

@@ -14,11 +14,26 @@ public class Constants {
     public static final String SEARCH_STORE_2 = "&vendoraddress=";
     public static final String SEARCH_FOOD_1 = "adminPage.php?foodname=";
     public static final String SEARCH_FOOD_2 = "&foodcourse=";
+    public static final String LOGIN_URL = "login.php";
+    public static final String ACCOUNT_PROFILE_URL = "user.php?acc=profile";
+    public static final String LOG_OUT = "logout.php";
+    public static final String SIGN_UP_URL = "signup.php";
 
     public static final String ISLOGIN = "isLogIn";
     public static final String STATUS = "status";
 
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String EMAIL = "email";
+    public static final String FIRST_NAME = "First_Name";
+    public static final String LAST_NAME = "Last_Name";
+    public static final String PASSWORD = "Password";
+    public static final String PHONE = "Phone";
+    public static final String ADDRESS = "Address";
+    public static final String BIRTHDAY = "Birthday";
+    public static final String EMAIL = "Email";
+    public static final String SIGN_IN = "signin";
+    public static final String SIGN_UP = "signup";
+    public static final String CART_ID = "cart_id";
+    public static final String CART_QUANTITY = "quantity";
+
+    public static final String SUCCESS = "Success";
+    public static final String ERROR = "Error";
 }
