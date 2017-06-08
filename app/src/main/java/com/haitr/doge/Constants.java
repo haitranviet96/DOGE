@@ -5,7 +5,7 @@ package com.haitr.doge;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.40/project1/";
+    public static final String BASE_URL = "http://192.168.0.105/project1/";
     public static final String ALL_FOOD_URL = "serverFood.php?cat=all";
     public static final String ALL_STORE_URL = "adminPage.php?vendorname=&vendoraddress=";
     public static final String SEARCH_DISH_VIA_STORE_NAME = "adminPage.php?dishwhere=";
@@ -18,6 +18,8 @@ public class Constants {
     public static final String ACCOUNT_PROFILE_URL = "user.php?acc=profile";
     public static final String LOG_OUT = "logout.php";
     public static final String SIGN_UP_URL = "signup.php";
+    public static final String ADD_CART = "addCart.php";
+    public static final String CHECK_LOGIN = "checkLogin.php";
 
     public static final String ISLOGIN = "isLogIn";
     public static final String STATUS = "status";
@@ -33,6 +35,9 @@ public class Constants {
     public static final String SIGN_UP = "signup";
     public static final String CART_ID = "cart_id";
     public static final String CART_QUANTITY = "quantity";
+    public static final String CART_PRICE = "price";
+    public static final String CART_LENGTH = "cart_length";
+    public static final String CART_DISH_NAME = "cart_dish_name";
 
     public static final String SUCCESS = "Success";
     public static final String ERROR = "Error";

@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.haitr.doge.Activity.MainActivity;
 import com.haitr.doge.Adapter.OrderAdapter;
 import com.haitr.doge.Constants;
+import com.haitr.doge.Object.Dish;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.JSON;
 import com.haitr.doge.R;
@@ -88,7 +90,12 @@ public class StoreListFragment extends RecyclerViewFragment {
         course.setText(food.getCourse());
         description.setText(food.getDescription());
 
-        orderAdapter = new OrderAdapter(storeDishList,getActivity(),noContent);
+        orderAdapter = new OrderAdapter(storeDishList, getActivity(), noContent, new OrderAdapter.BtnClickListener() {
+            @Override
+            public void onBtnClick(int id, Dish dish) {
+                ((MainActivity)getActivity()).changeCart(id, dish);
+            }
+        });
 
         // set up vendor list RecyclerView
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -120,6 +127,7 @@ public class StoreListFragment extends RecyclerViewFragment {
                             Vendor temp = new Vendor(storeDish.getString("Vendor_Name"), storeDish.getString("Address"), storeDish.getDouble("Quality"), storeDish.getString("Image"));
                             temp.setPrice(storeDish.getInt("Price"));
                             temp.setDishId(storeDish.getInt("DishID"));
+                            temp.setDishName(food.getName());
                             storeDishList.add(temp);
                         }
                     } catch (JSONException e) {

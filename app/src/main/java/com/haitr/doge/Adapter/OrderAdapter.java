@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.haitr.doge.Object.Dish;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.R;
 import com.haitr.doge.Object.Vendor;
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.haitr.doge.R.id.quantity;
 
 /**
  * Created by haitr on 5/26/2017.
@@ -29,11 +32,17 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<Object> list;
     private Context context;
     private TextView noContent;
+    private BtnClickListener mClickListener = null;
 
-    public OrderAdapter(List<Object> list, Context context, TextView noContent) {
+    public OrderAdapter(List<Object> list, Context context, TextView noContent, BtnClickListener mClickListener) {
         this.noContent = noContent;
         this.list = list;
         this.context = context;
+        this.mClickListener = mClickListener;
+    }
+
+    public interface BtnClickListener {
+        public abstract void onBtnClick(int id, Dish dish);
     }
 
     public void setContext(Context context) {
@@ -135,8 +144,8 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void configureFoodViewHolder(final OrderAdapter.FoodViewHolder holder, int position) {
-        Food food = (Food) list.get(position);
+    private void configureFoodViewHolder(final OrderAdapter.FoodViewHolder holder, final int position) {
+        final Food food = (Food) list.get(position);
         if(getItemCount() == 0){
             noContent.setVisibility(View.VISIBLE);
         }else {
@@ -155,6 +164,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     //showPopupMenu(holder.order_button);
+                    if(mClickListener != null && Integer.parseInt(holder.quantity.getText().toString()) > 0){
+                        food.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
+                        mClickListener.onBtnClick(food.getDishId(), food); //Integer.parseInt(holder.quantity.getText().toString()), food.getPrice()
+                    }
                 }
             });
 
@@ -182,7 +195,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private void configureVendorViewHolder(final OrderAdapter.VendorViewHolder holder, int position) {
-        Vendor vendor = (Vendor) list.get(position);
+        final Vendor vendor = (Vendor) list.get(position);
         if(getItemCount() == 0){
             noContent.setVisibility(View.VISIBLE);
         }else {
@@ -209,7 +222,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     //showPopupMenu(holder.order_button);
-
+                    if(mClickListener != null && Integer.parseInt(holder.quantity.getText().toString()) > 0){
+                        vendor.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
+                        mClickListener.onBtnClick(vendor.getDishId(), vendor); //Integer.parseInt(holder.quantity.getText().toString()), vendor.getPrice()
+                    }
                 }
             });
 

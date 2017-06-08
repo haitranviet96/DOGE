@@ -1,51 +1,34 @@
 package com.haitr.doge.Activity;
 
-import android.app.Fragment;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.haitr.doge.Constants;
 import com.haitr.doge.Fragment.HomeFragment;
-import com.haitr.doge.Fragment.StoreListFragment;
+import com.haitr.doge.Object.Dish;
+import com.haitr.doge.Object.Food;
 import com.haitr.doge.R;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.joanzapata.iconify.widget.IconButton;
+import com.joanzapata.iconify.widget.IconTextView;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -54,33 +37,60 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static java.lang.String.format;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
     HomeFragment homeFragment;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     NavigationView navigationView;
     FloatingActionButton fab;
     TextView itemCartBadgeTextView;
-    IconButton iconButtonCart;
-
+    IconTextView iconButtonCart;
     MaterialSearchView searchView;
+    private Toolbar toolbar;
+    static final int CHANGE_CART_REQUEST = 1;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Iconify.with(new FontAwesomeModule());
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSharedPreferences();
-
+        try {
+            Ion.with(getApplicationContext())
+                    .load("GET",Constants.BASE_URL + Constants.CHECK_LOGIN)
+                    .asString()
+                    .setCallback(new FutureCallback<String>() {
+                        @Override
+                        public void onCompleted(Exception e, String result) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(result);
+                                JSONObject login = jsonArray.getJSONObject(0);
+                                String email = login.getString("id");
+                                Log.d("email",email);
+                                if(!EMAIL.equalsIgnoreCase(email)) {
+                                    IS_LOGIN = false;
+                                    savePreferences();
+                                }
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }})
+                    .get(4000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +176,18 @@ public class MainActivity extends BaseActivity
         });
     }
 
+    public void changeCart(int id, Dish dish) {
+        int check = cartContains(id);
+        if(check == -1){
+            TRANSACTION.add(dish);
+        }else{
+            TRANSACTION.get(check).setQuantity(TRANSACTION.get(check).getQuantity() + dish.getQuantity());
+        }
+        saveCart();
+        itemCartBadgeTextView.setText("" + TRANSACTION.size());
+        itemCartBadgeTextView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void onResume() {
         View headerView = navigationView.getHeaderView(0);
@@ -173,17 +195,17 @@ public class MainActivity extends BaseActivity
         TextView email = (TextView) headerView.findViewById(R.id.email);
         getSharedPreferences();
         showLogin(IS_LOGIN);
-        if (IS_LOGIN){
+        if (IS_LOGIN) {
             profileName.setText(LAST_NAME + " " + FIRST_NAME);
             email.setText(EMAIL);
-        }else{
+        } else {
             profileName.setText("Your Name");
             email.setText("DOGE@doge.com");
         }
         super.onResume();
     }
 
-    private void showLogin(boolean isLogIn){
+    private void showLogin(boolean isLogIn) {
         Menu nav_menu = navigationView.getMenu();
         nav_menu.findItem(R.id.nav_login).setVisible(!isLogIn);
         nav_menu.findItem(R.id.nav_logout).setVisible(isLogIn);
@@ -213,7 +235,7 @@ public class MainActivity extends BaseActivity
         MenuItem item1 = menu.findItem(R.id.action_cart);
         RelativeLayout badgeLayout = (RelativeLayout) item1.getActionView();
         itemCartBadgeTextView = (TextView) badgeLayout.findViewById(R.id.badge_textView);
-        iconButtonCart = (IconButton) badgeLayout.findViewById(R.id.badge_icon_button);
+        iconButtonCart = (IconTextView) badgeLayout.findViewById(R.id.badge_icon_button);
         iconButtonCart.setTextColor(Color.WHITE);
         showCart();
 
@@ -228,23 +250,54 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    void showCartFragment(){
+    void showCartFragment() {
+        Intent intent;
         if (IS_LOGIN) {
-            //Intent intent = new Intent(getThis(), HJActivityMessagesContexts.class);
             //show fragment
+            intent = new Intent(MainActivity.this, YourCartActivity.class);
+            if(TRANSACTION.size() != 0) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("transaction", TRANSACTION);
+                intent.putExtras(bundle);
+                startActivityForResult(intent,CHANGE_CART_REQUEST);
+            }else{
+                Toast.makeText(this,"You have nothing in your cart. Please choose something to order !", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Toast.makeText(this,"You haven't login yet. Please login to order !", Toast.LENGTH_SHORT).show();
+            intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
     }
 
-    void addCart(int id, int quantity){
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case CHANGE_CART_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    // TODO Extract the data returned from the child Activity.
+                    Bundle b = data.getExtras();
+                    if (b != null) {
+                        ArrayList<Dish> temp;
+                        temp = (ArrayList<Dish>) b.getSerializable("transaction_return");
+                        TRANSACTION.clear();
+                        Log.d("transaction", TRANSACTION.size() + "");
+                        Log.d("temp", temp.size() + "");
+                        TRANSACTION = temp;
+                        Log.d("transaction", TRANSACTION.size() + "");
+                        saveCart();
+                        showCart();
+                    }
+                }
+                break;
+        }
     }
 
-    void showCart(){
-        if(CART_LENGTH > 0){
-            itemCartBadgeTextView.setText(""+CART_LENGTH);
+    void showCart() {
+        getCart();
+        if (TRANSACTION.size() > 0) {
+            itemCartBadgeTextView.setText("" + TRANSACTION.size() );
             itemCartBadgeTextView.setVisibility(View.VISIBLE);
         } else {
             itemCartBadgeTextView.setVisibility(View.GONE); // initially hidden

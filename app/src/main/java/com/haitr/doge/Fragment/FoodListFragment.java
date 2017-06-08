@@ -17,8 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.haitr.doge.Activity.BaseActivity;
+import com.haitr.doge.Activity.MainActivity;
 import com.haitr.doge.Adapter.OrderAdapter;
 import com.haitr.doge.Constants;
+import com.haitr.doge.Object.Dish;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.JSON;
 import com.haitr.doge.R;
@@ -29,7 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by haitr on 5/26/2017.
@@ -63,7 +68,7 @@ public class FoodListFragment extends RecyclerViewFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_food_list, container, false);
 
         // set Swipe layout
@@ -108,7 +113,13 @@ public class FoodListFragment extends RecyclerViewFragment {
         pricing.setText(String.format("%s", vendor.getPricing()));
         space.setText(String.format("%s", vendor.getSpace()));
 
-        orderAdapter = new OrderAdapter(foodDishList,getActivity(),noContent);
+        orderAdapter = new OrderAdapter(foodDishList, getActivity(), noContent, new OrderAdapter.BtnClickListener() {
+            @Override
+            public void onBtnClick(int id, Dish dish) {
+                ((MainActivity)getActivity()).changeCart(id,dish);
+                Log.d("ckeck cart", dish.getQuantity()+"");
+            }
+        });
 
         // set up vendor list RecyclerView
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -140,6 +151,7 @@ public class FoodListFragment extends RecyclerViewFragment {
                             Food temp = new Food(foodDish.getString("Food_Name"), foodDish.getString("Description"), foodDish.getString("Image"));
                             temp.setDishId(foodDish.getInt("DishID"));
                             temp.setPrice(foodDish.getInt("Price"));
+                            temp.setDishName(foodDish.getString("Food_Name"));
                             foodDishList.add(temp);
                         }
                     } catch (JSONException e) {

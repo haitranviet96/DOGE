@@ -13,5 +13,6 @@
 
     <string name="search_hint">Search food</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="please_check_your_order_carefully_before_send">Please check your order carefully before send :</string>
 
 </resources>
