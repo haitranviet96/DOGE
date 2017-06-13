@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.haitr.doge.Constants;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.Fragment.HomeFragment;
 import com.haitr.doge.R;
@@ -198,6 +199,13 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // loading album cover using Glide library
             // Glide.with(context).load(food.getImage()).into(holder.thumbnail);
+            Picasso.with(context)
+                    .load(Constants.BASE_PICTURE_URL + food.getImage())
+                    .error(R.drawable.shop_placeholder)
+                    .placeholder(R.drawable.shop_placeholder)
+                    .resize(200,200)
+                    .centerCrop()
+                    .into(holder.thumbnail);
         }
     }
 
@@ -214,7 +222,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // Glide.with(context).load(food.getImage()).into(holder.thumbnail);
 
             Picasso.with(context)
-                    .load(vendor.getImage())
+                    .load(Constants.BASE_PICTURE_URL + vendor.getImage())
                     .error(R.drawable.shop_placeholder)
                     .placeholder(R.drawable.shop_placeholder)
                     .resize(200,200)

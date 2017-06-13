@@ -13,6 +13,12 @@ public class Dish implements Serializable{
     private String dishName;
     private String date = "";
 
+    public Dish(int quantity, String dishName, String date) {
+        this.quantity = quantity;
+        this.dishName = dishName;
+        this.date = date;
+    }
+
     public Dish(int dishId, int quantity, int price, String dishName) {
         this.quantity = quantity;
         this.dishId = dishId;

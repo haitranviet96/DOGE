@@ -24,6 +24,7 @@ import com.haitr.doge.Object.Food;
 import com.haitr.doge.JSON;
 import com.haitr.doge.R;
 import com.haitr.doge.Object.Vendor;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +86,12 @@ public class StoreListFragment extends RecyclerViewFragment {
         description = (TextView) rootView.findViewById(R.id.address);
         noContent = (TextView) rootView.findViewById(R.id.noContent);
 
+        Picasso.with(getContext())
+                .load(Constants.BASE_PICTURE_URL + food.getImage())
+                .error(R.drawable.shop_placeholder)
+                .placeholder(R.drawable.shop_placeholder)
+                .resize(1000,1000)
+                .into(imageView);
         name.setText(food.getName());
         type.setText(food.getType());
         course.setText(food.getCourse());

@@ -2,6 +2,7 @@ package com.haitr.doge.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.haitr.doge.Object.Dish;
@@ -139,24 +141,17 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private void configureHistoryViewHolder(final CartAdapter.HistoryViewHolder holder, final int position) {
-        Iconify.with(new FontAwesomeModule());
         final Dish dish = list.get(position);
 //        if(getItemCount() == 0){
 //            noContent.setVisibility(View.VISIBLE);
 //        }else {
-        holder.delete.setText("{fa-trash-o}");
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mClickListener != null){
-                    mClickListener.onBtnClick(dish.getDishId());
-                }
-            }
-        });
+        holder.delete.setText(dish.getDate());
+        holder.delete.setTextColor(Color.BLACK);
+        holder.delete.setPadding(0,0,0,0);
 
         holder.name.setText(dish.getDishName());
         holder.quantity.setText(dish.getQuantity() + "");
-        holder.price.setText(dish.getPrice() + "đ");
+        holder.price.setVisibility(View.GONE);
 //        }
     }
 

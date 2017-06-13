@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.haitr.doge"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.haitr.doge">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -46,6 +46,12 @@
             android:name=".Activity.YourCartActivity"
             android:label="Your Cart"
             android:parentActivityName=".Activity.MainActivity" />
+        <activity
+            android:name=".Activity.EditActivity"
+            android:label="Edit Profile"
+            android:noHistory="true"
+            android:parentActivityName=".Activity.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

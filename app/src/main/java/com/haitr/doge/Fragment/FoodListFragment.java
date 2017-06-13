@@ -103,7 +103,7 @@ public class FoodListFragment extends RecyclerViewFragment {
         close_time.setText(vendor.getClose_time());
         address.setText(vendor.getAddress());
         Picasso.with(getContext())
-                .load(vendor.getImage())
+                .load(Constants.BASE_PICTURE_URL + vendor.getImage())
                 .error(R.drawable.shop_placeholder)
                 .placeholder(R.drawable.shop_placeholder)
                 .fit()

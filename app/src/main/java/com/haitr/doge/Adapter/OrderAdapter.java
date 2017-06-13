@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.haitr.doge.Constants;
 import com.haitr.doge.Object.Dish;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.R;
@@ -160,6 +161,14 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // loading album cover using Glide library
             // Glide.with(context).load(food.getImage()).into(holder.thumbnail);
 
+            Picasso.with(context)
+                    .load(Constants.BASE_PICTURE_URL + food.getImage())
+                    .error(R.drawable.shop_placeholder)
+                    .placeholder(R.drawable.shop_placeholder)
+                    .resize(200,200)
+                    .centerCrop()
+                    .into(holder.thumbnail);
+
             holder.order_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -211,7 +220,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // Glide.with(context).load(food.getImage()).into(holder.thumbnail);
 
             Picasso.with(context)
-                    .load(vendor.getImage())
+                    .load(Constants.BASE_PICTURE_URL + vendor.getImage())
                     .error(R.drawable.shop_placeholder)
                     .placeholder(R.drawable.shop_placeholder)
                     .resize(200,200)

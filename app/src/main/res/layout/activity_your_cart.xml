@@ -27,8 +27,7 @@
                 android:orientation="horizontal"
                 android:padding="10dp"
                 android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:weightSum="5">
+                android:paddingStart="5dp">
 
                 <TextView
                     android:id="@+id/name"

@@ -140,7 +140,7 @@ public class LoginActivity extends BaseActivity {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
 
-                // TODO: Implement successful signUp logic here
+                // TODO: Implement successful saveChanges logic here
                 // By default we just finish the BaseActivity and log them in automatically
                 this.finish();
             }

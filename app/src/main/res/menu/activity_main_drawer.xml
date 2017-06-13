@@ -23,9 +23,12 @@
     <item android:title="Account">
         <menu>
             <item
+                android:id="@+id/nav_profile"
+                android:title="Profile" />
+            <item
                 android:id="@+id/nav_transaction"
                 android:icon="@drawable/ic_menu_list"
-                android:title="Your Transaction" />
+                android:title="Transaction" />
             <item
                 android:id="@+id/nav_login"
                 android:icon="@drawable/ic_menu_sign_in"

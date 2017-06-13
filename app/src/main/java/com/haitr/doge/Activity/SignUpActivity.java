@@ -75,7 +75,7 @@ public class SignUpActivity extends BaseActivity {
         final String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        // TODO: Implement your own signUp logic here.
+        // TODO: Implement your own saveChanges logic here.
         Ion.with(getApplicationContext())
                 .load(Constants.BASE_URL + Constants.SIGN_UP_URL)
                 .setBodyParameter("fname", first_name)
@@ -124,7 +124,7 @@ public class SignUpActivity extends BaseActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onSignUpSuccess or onSignUpFailed
+                        // On complete call either onSaveSuccess or onSaveFailed
                         // depending on success
                         if(IS_LOGIN) onSignUpSuccess(); else onSignUpFailed();
                         progressDialog.dismiss();
