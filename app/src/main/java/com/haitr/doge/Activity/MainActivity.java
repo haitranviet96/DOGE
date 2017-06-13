@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity
     FloatingActionButton fab;
     TextView itemCartBadgeTextView;
     IconTextView iconButtonCart;
-    MaterialSearchView searchView;
+    public static MaterialSearchView searchView;
     private Toolbar toolbar;
     static final int CHANGE_CART_REQUEST = 1;
 
@@ -256,7 +256,6 @@ public class MainActivity extends BaseActivity
 
     void showCartFragment() {
         Intent intent;
-        if (IS_LOGIN) {
             //show fragment
             intent = new Intent(MainActivity.this, YourCartActivity.class);
             if(TRANSACTION.size() != 0) {
@@ -267,11 +266,6 @@ public class MainActivity extends BaseActivity
             }else{
                 Toast.makeText(this,"You have nothing in your cart. Please choose something to order !", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this,"You haven't login yet. Please login to order !", Toast.LENGTH_SHORT).show();
-            intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -320,7 +314,7 @@ public class MainActivity extends BaseActivity
             fm.beginTransaction().replace(R.id.content_main, new HomeFragment()).commit();
         } else if (id == R.id.nav_transaction) {
             if (!IS_LOGIN){
-                Toast.makeText(this,"You haven't login yet. Please login to order !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"You haven't login yet. Please login to show your transactions !", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }else{
                 navigationView.setCheckedItem(R.id.nav_transaction);
@@ -328,7 +322,12 @@ public class MainActivity extends BaseActivity
                 fm.beginTransaction().replace(R.id.content_main, new TransactionHistoryFragment()).commit();
             }
         }  else if (id == R.id.nav_profile) {
-            startActivity(new Intent(MainActivity.this, EditActivity.class));
+            if (!IS_LOGIN){
+                Toast.makeText(this,"You haven't login yet. Please login to edit your profile !", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }else{
+                startActivity(new Intent(MainActivity.this, EditActivity.class));
+            }
         }else if (id == R.id.nav_login) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         } else if (id == R.id.nav_logout) {

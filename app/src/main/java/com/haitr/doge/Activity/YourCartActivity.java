@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haitr.doge.Adapter.CartAdapter;
 import com.haitr.doge.Constants;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class YourCartActivity extends AppCompatActivity {
+public class YourCartActivity extends BaseActivity {
 
     ArrayList<Dish> list = new ArrayList<>();
     RecyclerView listView;
@@ -34,6 +35,7 @@ public class YourCartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_cart);
+        getSharedPreferences();
 
         Bundle b = this.getIntent().getExtras();
         if (b != null)
@@ -59,46 +61,51 @@ public class YourCartActivity extends AppCompatActivity {
         order_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(list.size()>0) {
-                    new SweetAlertDialog(YourCartActivity.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("Are you sure?")
-                            .setContentText("Won't be able to cancel this order!")
-                            .setCancelText("No,cancel !")
-                            .setConfirmText("Yes,order !")
-                            .showCancelButton(true)
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    for (int i = 0; i < list.size(); i++) {
-                                        Dish temp = list.get(i);
-                                        Ion.with(getApplicationContext())
-                                                .load(Constants.BASE_URL + Constants.ADD_CART)
-                                                .setBodyParameter("submit", "[{\"" + temp.getDishId() + "\":\"" + temp.getQuantity() + "\"}]")
-                                                .asString()
-                                                .setCallback(new FutureCallback<String>() {
+                if (!IS_LOGIN){
+                    Toast.makeText(YourCartActivity.this,"You haven't login yet. Please login to order !", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(YourCartActivity.this, LoginActivity.class));
+                }else {
+                    if (list.size() > 0) {
+                        new SweetAlertDialog(YourCartActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Are you sure?")
+                                .setContentText("Won't be able to cancel this order!")
+                                .setCancelText("No,cancel !")
+                                .setConfirmText("Yes,order !")
+                                .showCancelButton(true)
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        for (int i = 0; i < list.size(); i++) {
+                                            Dish temp = list.get(i);
+                                            Ion.with(getApplicationContext())
+                                                    .load(Constants.BASE_URL + Constants.ADD_CART)
+                                                    .setBodyParameter("submit", "[{\"" + temp.getDishId() + "\":\"" + temp.getQuantity() + "\"}]")
+                                                    .asString()
+                                                    .setCallback(new FutureCallback<String>() {
+                                                        @Override
+                                                        public void onCompleted(Exception e, String result) {
+                                                            Log.d("check link", result);
+                                                        }
+                                                    });
+                                        }
+                                        sDialog
+                                                .setTitleText("Ordered!")
+                                                .setContentText("Your your order has been successful!")
+                                                .setConfirmText("OK")
+                                                .showCancelButton(false)
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                     @Override
-                                                    public void onCompleted(Exception e, String result) {
-                                                        Log.d("check link", result);
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        onBackPressed();
                                                     }
-                                                });
+                                                })
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                        list.clear();
+                                        changeCart();
                                     }
-                                    sDialog
-                                            .setTitleText("Ordered!")
-                                            .setContentText("Your your order has been successful!")
-                                            .setConfirmText("OK")
-                                            .showCancelButton(false)
-                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                @Override
-                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                    onBackPressed();
-                                                }
-                                            })
-                                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                    list.clear();
-                                    changeCart();
-                                }
-                            })
-                            .show();
+                                })
+                                .show();
+                    }
                 }
             }
         });

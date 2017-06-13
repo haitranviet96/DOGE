@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.haitr.doge.Activity.MainActivity;
 import com.haitr.doge.Constants;
 import com.haitr.doge.Object.Food;
 import com.haitr.doge.JSON;
@@ -34,7 +35,7 @@ public class HomeFragment extends RecyclerViewFragment {
     TextView noContent, noContent1;
     ListViewAdapter foodAdapter, storeAdapter;
     PullRefreshLayout swipeLayout;
-    RecyclerView foodListView,storeListView;
+    RecyclerView foodListView, storeListView;
 
     ArrayList<Object> foodList = new ArrayList<>();
     ArrayList<Object> storeList = new ArrayList<>();
@@ -77,13 +78,16 @@ public class HomeFragment extends RecyclerViewFragment {
         // refresh complete
         swipeLayout.setRefreshing(false);
 
-        foodAdapter = new ListViewAdapter(foodList,getActivity(),noContent);
+        foodAdapter = new ListViewAdapter(foodList, getActivity(), noContent);
         foodAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Food food = (Food) foodList.get(position);
-                String name = food.getName();
-                Toast.makeText(getActivity(), name + " was clicked!", Toast.LENGTH_SHORT).show();
+                if (MainActivity.searchView != null)
+                    if (MainActivity.searchView.isSearchOpen()) {
+                        MainActivity.searchView.closeSearch();
+                    }
+                //Toast.makeText(getActivity(), name + " was clicked!", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
                 Bundle bundle = new Bundle();
@@ -102,13 +106,16 @@ public class HomeFragment extends RecyclerViewFragment {
                 ft.commit();
             }
         });
-        storeAdapter = new ListViewAdapter(storeList,getActivity(), noContent1);
+        storeAdapter = new ListViewAdapter(storeList, getActivity(), noContent1);
         storeAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Vendor store = (Vendor) storeList.get(position);
-                String name = store.getName();
-                Toast.makeText(getActivity(), name + " was clicked!", Toast.LENGTH_SHORT).show();
+                if (MainActivity.searchView != null)
+                    if (MainActivity.searchView.isSearchOpen()) {
+                        MainActivity.searchView.closeSearch();
+                    }
+                //Toast.makeText(getActivity(), name + " was clicked!", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
                 Bundle bundle = new Bundle();
@@ -167,7 +174,7 @@ public class HomeFragment extends RecyclerViewFragment {
                         JSONArray jsonArray = new JSONArray(output);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject food = jsonArray.getJSONObject(i);
-                            foodList.add(new Food(food.getInt("FoodID"), food.getString("Food_Name"), food.getString("Type"),food.getString("Course"),food.getString("Description"), food.getString("Image")));
+                            foodList.add(new Food(food.getInt("FoodID"), food.getString("Food_Name"), food.getString("Type"), food.getString("Course"), food.getString("Description"), food.getString("Image")));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -252,7 +259,7 @@ public class HomeFragment extends RecyclerViewFragment {
                         JSONArray jsonArray = new JSONArray(output);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject store = jsonArray.getJSONObject(i);
-                            storeList.add(new Vendor(store.getInt("VendorID"), store.getString("Vendor_Name"), store.getString("Address"), store.getString("Open_Time"), store.getString("Close_Time"),store.getDouble("Quality"),store.getDouble("Service"),store.getDouble("Pricing"),store.getDouble("Space"), store.getString("Image")));
+                            storeList.add(new Vendor(store.getInt("VendorID"), store.getString("Vendor_Name"), store.getString("Address"), store.getString("Open_Time"), store.getString("Close_Time"), store.getDouble("Quality"), store.getDouble("Service"), store.getDouble("Pricing"), store.getDouble("Space"), store.getString("Image")));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

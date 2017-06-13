@@ -176,6 +176,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if(mClickListener != null && Integer.parseInt(holder.quantity.getText().toString()) > 0){
                         food.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
                         mClickListener.onBtnClick(food.getDishId(), food); //Integer.parseInt(holder.quantity.getText().toString()), food.getPrice()
+                        holder.quantity.setText(""+1);
                     }
                 }
             });
@@ -234,6 +235,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if(mClickListener != null && Integer.parseInt(holder.quantity.getText().toString()) > 0){
                         vendor.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
                         mClickListener.onBtnClick(vendor.getDishId(), vendor); //Integer.parseInt(holder.quantity.getText().toString()), vendor.getPrice()
+                        holder.quantity.setText(""+1);
                     }
                 }
             });
