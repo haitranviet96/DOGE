@@ -73,7 +73,7 @@ public class SignUpActivity extends BaseActivity {
         String first_name = firstNameText.getText().toString();
         String last_name = lastNameText.getText().toString();
         final String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        final String password = passwordText.getText().toString();
 
         // TODO: Implement your own saveChanges logic here.
         Ion.with(getApplicationContext())
@@ -91,6 +91,7 @@ public class SignUpActivity extends BaseActivity {
 
                         if (result.equalsIgnoreCase(Constants.SUCCESS)) {
                             EMAIL = email;
+                            PASSWORD = password;
                             IS_LOGIN = true;
                             savePreferences();
                             Ion.with(getApplicationContext())

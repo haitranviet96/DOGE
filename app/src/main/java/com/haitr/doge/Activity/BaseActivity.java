@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class BaseActivity extends AppCompatActivity {
 
     boolean IS_LOGIN = false;
-    String EMAIL, FIRST_NAME, LAST_NAME, PHONE, ADDRESS, BIRTHDAY;
+    String EMAIL, FIRST_NAME, LAST_NAME, PHONE, ADDRESS, BIRTHDAY,PASSWORD;
     ArrayList<Dish> TRANSACTION = new ArrayList<>();
 
 //    protected Toolbar mToolbar;
@@ -31,6 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         PHONE = sharedPreferences.getString(Constants.PHONE, "");
         ADDRESS = sharedPreferences.getString(Constants.ADDRESS, "");
         BIRTHDAY = sharedPreferences.getString(Constants.BIRTHDAY, "");
+        PASSWORD = sharedPreferences.getString(Constants.PASSWORD, "");
     }
 
     void savePreferences() {
@@ -47,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
             editor.putString(Constants.PHONE, PHONE);
             editor.putString(Constants.ADDRESS, ADDRESS);
             editor.putString(Constants.BIRTHDAY, BIRTHDAY);
+            editor.putString(Constants.PASSWORD, PASSWORD);
         }else{
             editor.clear();
         }

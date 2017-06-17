@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity {
         progressDialog.show();
 
         final String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        final String password = passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
         Ion.with(getApplicationContext())
@@ -94,6 +94,7 @@ public class LoginActivity extends BaseActivity {
 
                         if (result.equalsIgnoreCase(Constants.SUCCESS)) {
                             EMAIL = email;
+                            PASSWORD = password;
                             IS_LOGIN = true;
                             savePreferences();
                             Ion.with(getApplicationContext())

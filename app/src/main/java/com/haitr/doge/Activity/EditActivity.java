@@ -62,6 +62,8 @@ public class EditActivity extends BaseActivity {
         lastNameText.setText(LAST_NAME);
         phoneText.setText(PHONE);
         addressText.setText(ADDRESS);
+        passwordText.setText(PASSWORD);
+        rePasswordText.setText(PASSWORD);
 
         phoneText.addTextChangedListener(new TextWatcher() {
             private boolean mFormatting; // this is a flag which prevents the  stack overflow.

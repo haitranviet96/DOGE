@@ -35,7 +35,6 @@ public class YourCartActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_cart);
-        getSharedPreferences();
 
         Bundle b = this.getIntent().getExtras();
         if (b != null)
@@ -120,6 +119,13 @@ public class YourCartActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume(){
+        getSharedPreferences();
+        super.onResume();
+    }
+
 
     void deleteOne(int id){
         for(int i = 0; i < list.size(); i++){
