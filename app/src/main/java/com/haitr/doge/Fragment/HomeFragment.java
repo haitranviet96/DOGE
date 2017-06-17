@@ -63,8 +63,8 @@ public class HomeFragment extends RecyclerViewFragment {
             public void onRefresh() {
                 // start refresh
                 //swipeLayout.setRefreshStyle(randInt(0,4));
-                prepareStore(Constants.BASE_URL + Constants.ALL_STORE_URL);
-                prepareFoods(Constants.BASE_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
+                prepareStore(Constants.BASE_ADMIN_URL + Constants.ALL_STORE_URL);
+                prepareFoods(Constants.BASE_ADMIN_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
                 //noContent.setVisibility(View.GONE);
 //                foodDishList.clear();
 //                foodDishList.add(new Food());
@@ -143,8 +143,8 @@ public class HomeFragment extends RecyclerViewFragment {
         noContent = (TextView) rootView.findViewById(R.id.noContent);
         noContent1 = (TextView) rootView.findViewById(R.id.noContent1);
 
-        prepareFoods(Constants.BASE_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
-        prepareStore(Constants.BASE_URL + Constants.ALL_STORE_URL);
+        prepareFoods(Constants.BASE_ADMIN_URL + Constants.SEARCH_FOOD_1 + Constants.SEARCH_FOOD_2);
+        prepareStore(Constants.BASE_ADMIN_URL + Constants.ALL_STORE_URL);
 
         // set up vendor list RecyclerView
         foodListView.setLayoutManager(new GridLayoutManager(getActivity(), 2));

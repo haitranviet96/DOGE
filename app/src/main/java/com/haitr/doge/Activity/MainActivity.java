@@ -125,8 +125,8 @@ public class MainActivity extends BaseActivity
             public boolean onQueryTextSubmit(String query) {
                 //Do some magic
                 Toast.makeText(getApplicationContext(), "Search " + query, Toast.LENGTH_SHORT).show();
-                homeFragment.prepareFoods(Constants.BASE_URL + Constants.SEARCH_FOOD_1 + query + Constants.SEARCH_FOOD_2);
-                homeFragment.prepareStore(Constants.BASE_URL + Constants.SEARCH_STORE_1 + query + Constants.SEARCH_STORE_2);
+                homeFragment.prepareFoods(Constants.BASE_ADMIN_URL + Constants.SEARCH_FOOD_1 + query + Constants.SEARCH_FOOD_2);
+                homeFragment.prepareStore(Constants.BASE_ADMIN_URL + Constants.SEARCH_STORE_1 + query + Constants.SEARCH_STORE_2);
                 return false;
             }
 

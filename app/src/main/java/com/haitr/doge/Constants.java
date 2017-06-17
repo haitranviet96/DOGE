@@ -5,8 +5,9 @@ package com.haitr.doge;
  */
 
 public class Constants {
-    public static final String BASE_URL = "http://192.168.1.113/controller/";
-    public static final String BASE_PICTURE_URL = "http://192.168.1.113/Picture/";
+    public static final String BASE_ADMIN_URL = "http://192.168.1.40/adminApp/controller/";
+    public static final String BASE_URL = "http://192.168.1.40/project1/controller/";
+    public static final String BASE_PICTURE_URL = "http://192.168.1.40/Picture/";
     public static final String ALL_FOOD_URL = "serverFood.php?cat=all";
     public static final String ALL_STORE_URL = "adminPage.php?vendorname=&vendoraddress=";
     public static final String SEARCH_DISH_VIA_STORE_NAME = "adminPage.php?dishwhere=";
@@ -26,7 +27,6 @@ public class Constants {
     public static final String USER_EDIT = "?acc=edit";
 
     public static final String ISLOGIN = "isLogIn";
-    public static final String STATUS = "status";
 
     public static final String FIRST_NAME = "First_Name";
     public static final String LAST_NAME = "Last_Name";

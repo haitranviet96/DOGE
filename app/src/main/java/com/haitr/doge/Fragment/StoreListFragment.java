@@ -70,7 +70,7 @@ public class StoreListFragment extends RecyclerViewFragment {
             @Override
             public void onRefresh() {
                 // start refresh
-                prepareDish(Constants.BASE_URL + Constants.SEARCH_DISH_VIA_FOOD_NAME + food.getName());
+                prepareDish(Constants.BASE_ADMIN_URL + Constants.SEARCH_DISH_VIA_FOOD_NAME + food.getName());
             }
         });
         swipeLayout.setRefreshStyle(randInt(0, 4));
@@ -111,7 +111,7 @@ public class StoreListFragment extends RecyclerViewFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(orderAdapter);
 
-        prepareDish(Constants.BASE_URL + Constants.SEARCH_DISH_VIA_FOOD_NAME + food.getName());
+        prepareDish(Constants.BASE_ADMIN_URL + Constants.SEARCH_DISH_VIA_FOOD_NAME + food.getName());
 
         return rootView;
     }
