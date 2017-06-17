@@ -5,8 +5,8 @@ package com.haitr.doge;
  */
 
 public class Constants {
-    public static final String BASE_ADMIN_URL = "http://192.168.1.40/adminApp/controller/";
-    public static final String BASE_URL = "http://192.168.1.40/project1/controller/";
+    public static final String BASE_ADMIN_URL = "http://192.168.1.40/adminApp/model/";
+    public static final String BASE_URL = "http://192.168.1.40/project1/model/";
     public static final String BASE_PICTURE_URL = "http://192.168.1.40/Picture/";
     public static final String ALL_FOOD_URL = "serverFood.php?cat=all";
     public static final String ALL_STORE_URL = "adminPage.php?vendorname=&vendoraddress=";
